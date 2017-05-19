@@ -8,6 +8,8 @@ router.get('/', ctx => {
 
 router.post('/device', DeviceControler.create);
 
-router.post('/position', DeviceControler.pushHistory);
+router.post('/device/history', DeviceControler.pushHistory);
+
+router.get('/device/:deviceId/history', DeviceControler.getHistory);
 
 module.exports = router.routes();

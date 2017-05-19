@@ -112,6 +112,13 @@ class DeviceController {
            }
         });
     }
+
+    static async getHistory(ctx) {
+        const { deviceId } = ctx.params;
+        const { from, to } = ctx.query;
+
+        ctx.body = deviceId + ' ' + from + ' ' + to;
+    }
 }
 
 module.exports = DeviceController;

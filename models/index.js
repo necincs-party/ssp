@@ -13,6 +13,22 @@ const deviceSchema = Schema({
         type: Date,
         default: Date.now
     },
+    history: [{
+        date: {
+            type: Date,
+            required: true,
+        },
+        coords: {
+            lat: {
+                type: Number,
+                required: true,
+            },
+            lon: {
+                type: Number,
+                required: true,
+            },
+        },
+    }],
     trustees: [Types.ObjectId],
 });
 

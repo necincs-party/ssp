@@ -1,21 +1,21 @@
 const { Device, Users } = require('../models');
 const validateBody = require('../lib/bodyValidator');
 
-const types = {
-    create: {
-        ownerId: String,
-    },
-    pushHistory: {
-        deviceId: String,
-        locations: [{
-            timestamp: Number,
-            lat: Number,
-            lon: Number,
-        }],
-    },
-};
-
 class DeviceController {
+    static types = {
+        create: {
+            ownerId: String,
+        },
+        pushHistory: {
+            deviceId: String,
+            locations: [{
+                timestamp: Number,
+                lat: Number,
+                lon: Number,
+            }],
+        },
+    };
+
     /**
      * Create new device
      * body: {
@@ -70,7 +70,7 @@ class DeviceController {
     static async pushHistory(ctx) {
         const body = ctx.request.body;
 
-        const valid = await validateBody(body, types.pushHistory);
+        const valid = await validateBody(body, DeviceController.types.pushHistory);
 
         if (valid === false) {
             ctx.status = 400;
@@ -100,6 +100,7 @@ class DeviceController {
 
         device.history = [...history, ...device.history];
 
+        // todo: add mongoose validation step as well
         await device.save((err, updatedDevice) => {
            if (err) {
                ctx.status = 500;

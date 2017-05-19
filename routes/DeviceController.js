@@ -2,19 +2,21 @@ const { Device, Users } = require('../models');
 const validateBody = require('../lib/bodyValidator');
 
 class DeviceController {
-    static types = {
-        create: {
-            ownerId: String,
-        },
-        pushHistory: {
-            deviceId: String,
-            locations: [{
-                timestamp: Number,
-                lat: Number,
-                lon: Number,
-            }],
-        },
-    };
+    static get types() {
+        return {
+            create: {
+                ownerId: String,
+            },
+            pushHistory: {
+                deviceId: String,
+                locations: [{
+                    timestamp: Number,
+                    lat: Number,
+                    lon: Number,
+                }],
+            },
+        };
+    }
 
     /**
      * Create new device
@@ -25,7 +27,7 @@ class DeviceController {
      * @returns {Promise.<void>}
      */
     static async create(ctx) {
-        const body = ctx.request.body;
+        const { body } = ctx.request;
 
         const user = await Users.findOne({ _id: body.ownerId });
 
@@ -68,7 +70,7 @@ class DeviceController {
      * @returns {Promise.<void>}
      */
     static async pushHistory(ctx) {
-        const body = ctx.request.body;
+        const { body } = ctx.request;
 
         const valid = await validateBody(body, DeviceController.types.pushHistory);
 

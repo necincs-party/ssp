@@ -113,11 +113,36 @@ class DeviceController {
         });
     }
 
+    /**
+     * Responses with array of history fields
+     * get params ?from = start UTC timestamp &to = end UTC timestamp
+     * @param ctx
+     * @returns {Promise.<void>}
+     */
     static async getHistory(ctx) {
         const { deviceId } = ctx.params;
         const { from, to } = ctx.query;
 
-        ctx.body = deviceId + ' ' + from + ' ' + to;
+        const device = await Device.findById(deviceId);
+
+        if (device === null) {
+            ctx.status = 400;
+            ctx.body = {
+                message: `There is no registered device with id ${deviceId}`,
+            };
+        } else {
+            const { history } = device;
+
+            if (from || to) {
+                ctx.body = history.filter(field => {
+                    const isAfterStart = from ? field.date > new Date(+from) : true;
+                    const isBeforeEnd = to ? field.date < new Date(+to) : true;
+                    return isAfterStart && isBeforeEnd;
+                });
+            } else {
+                ctx.body = history;
+            }
+        }
     }
 }
 

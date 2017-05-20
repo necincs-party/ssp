@@ -18,7 +18,7 @@ const deviceSchema = Schema({
             type: Date,
             required: true,
         },
-        coords: {
+        cords: {
             lat: {
                 type: Number,
                 required: true,

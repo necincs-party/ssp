@@ -94,7 +94,7 @@ class DeviceController {
 
         const history = body.locations.map(location => ({
             date: new Date(location.timestamp),
-            coords: {
+            cords: {
                 lat: location.lat,
                 lon: location.lon,
             },
